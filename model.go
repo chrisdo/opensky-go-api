@@ -118,59 +118,20 @@ type OskyValue interface {
 
 // Angle is a wrapepr type for degree values, such as track and heading
 type Angle struct {
-	float64
+	Value float64
+	Valid bool
 }
 
 // Altitude is a wrapepr type for altitude related values, such as Geometric or Barometric Altitude
 type Altitude struct {
-	float64
+	Value float64
+	Valid bool
 }
 
 // Speed is a wrapper type for speed related values, such as airspeed or vertical rate
 type Speed struct {
-	float64
-}
-
-func (a *Altitude) UnmarshalJSON(data []byte) error {
-	var v interface{}
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch value := v.(type) {
-	case float64:
-		a.float64 = float64(value)
-	default:
-		a.float64 = -1
-	}
-	return nil
-}
-
-func (a *Angle) UnmarshalJSON(data []byte) error {
-	var v interface{}
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch value := v.(type) {
-	case float64:
-		a.float64 = float64(value)
-	default:
-		a.float64 = -1
-	}
-	return nil
-}
-
-func (a *Speed) UnmarshalJSON(data []byte) error {
-	var v interface{}
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch value := v.(type) {
-	case float64:
-		a.float64 = float64(value)
-	default:
-		a.float64 = -1
-	}
-	return nil
+	Value float64
+	Valid bool
 }
 
 // StateVector contains the current state of an aircraft (or vehicle)
@@ -257,37 +218,37 @@ func (s *StateVector) UnmarshalJSON(data []byte) error {
 
 	if v[5] != nil {
 		val, _ := v[5].(float64)
-		s.Longitude = Angle{val}
+		s.Longitude = Angle{val, true}
 	}
 	if v[6] != nil {
 		val, _ := v[6].(float64)
-		s.Latitude = Angle{val}
+		s.Latitude = Angle{val, true}
 	}
 
 	if v[7] != nil {
 		val, _ := v[6].(float64)
-		s.AltitudeBaro = Altitude{val}
+		s.AltitudeBaro = Altitude{val, true}
 	}
 	s.OnGround = v[8].(bool)
 
 	if v[9] != nil {
 		val, _ := v[9].(float64)
-		s.Velocity = Speed{val}
+		s.Velocity = Speed{val, true}
 	}
 	if v[10] != nil {
 		val, _ := v[10].(float64)
-		s.TrueTrack = Angle{val}
+		s.TrueTrack = Angle{val, true}
 	}
 	if v[11] != nil {
 		val, _ := v[11].(float64)
-		s.VerticalRate = Speed{val}
+		s.VerticalRate = Speed{val, true}
 	}
 	if v[12] != nil {
 		s.Sensors = v[12].(Sensors)
 	}
 	if v[13] != nil {
 		val, _ := v[13].(float64)
-		s.AltitudeGeo = Altitude{val}
+		s.AltitudeGeo = Altitude{val, true}
 	}
 	if v[14] != nil {
 		s.Squawk = v[14].(string)

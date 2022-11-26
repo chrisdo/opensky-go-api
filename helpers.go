@@ -9,13 +9,13 @@ func GetStartAndEndOfDay(t time.Time) (time.Time, time.Time) {
 }
 
 func (a *Altitude) ConvertToFeet() float64 {
-	return a.float64 * metersToFeet
+	return a.Value * metersToFeet
 }
 
 func (s *Speed) ConverToKnots() float64 {
-	return s.float64 * mPerSToKnots
+	return s.Value * mPerSToKnots
 }
 
 func (s Speed) ConvertToFtPerMin() float64 {
-	return s.float64 * mPerSToFtPerMin
+	return s.Value * mPerSToFtPerMin
 }
